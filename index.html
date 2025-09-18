@@ -3,27 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista de Tareas</title>
+  <title>Lista de Tareas Avanzada</title>
   <link rel="stylesheet" href="./style.css">
-
-  <!-- Manifest -->
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#0f172a">
 </head>
 <body>
   <div class="app">
     <h1>📋 Mis Tareas</h1>
-    <form id="taskForm">
-      <input type="text" id="taskInput" placeholder="Nueva tarea..." required>
-      <button type="submit">Añadir</button>
-    </form>
-    <ul id="taskList"></ul>
+
+    <!-- Login Google -->
+    <div id="loginContainer">
+      <button id="googleSignIn">Iniciar sesión con Google</button>
+    </div>
+
+    <!-- Contenido de la app -->
+    <div id="appContent" style="display:none;">
+      <button id="logout">Cerrar sesión</button>
+
+      <h2>Mis listas</h2>
+      <ul id="myLists"></ul>
+      <input type="text" id="newListName" placeholder="Nueva lista">
+      <button id="addList">Agregar lista</button>
+
+      <h2>Listas compartidas</h2>
+      <ul id="sharedLists"></ul>
+
+      <div id="tasksSection" style="display:none;">
+        <h3 id="currentListName"></h3>
+        <ul id="taskList"></ul>
+        <input type="text" id="newTaskInput" placeholder="Nueva tarea">
+        <button id="addTaskBtn">Agregar tarea</button>
+        <button id="backToLists">← Volver a listas</button>
+        <button id="shareListBtn">Compartir lista</button>
+      </div>
+    </div>
   </div>
 
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <script src="./app.js"></script>
-  
+
   <script>
     // Registrar Service Worker
     if ('serviceWorker' in navigator) {
