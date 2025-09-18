@@ -100,7 +100,7 @@ function loadLists() {
 
   // Listas compartidas
   db.collection("lists")
-    .where("members", "array-contains", { uid: currentUser.uid, role: "editor" }) // simplificado
+    .where("members", "array-contains", currentUser.uid) // corregido para buscar por UID solo
     .onSnapshot(snapshot => {
       sharedLists.innerHTML = "";
       snapshot.forEach(doc => {
@@ -175,6 +175,6 @@ async function shareList(listId) {
 
   const uid = users.docs[0].id;
   await db.collection("lists").doc(listId)
-    .update({ members: firebase.firestore.FieldValue.arrayUnion({ uid, role: "editor" }) });
+    .update({ members: firebase.firestore.FieldValue.arrayUnion(uid) });
   alert("Lista compartida!");
 }
