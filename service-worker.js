@@ -1,37 +1,15 @@
-const CACHE_NAME = "todo-app-cache-v1";
-const URLS_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/style.css",
-  "/app.js",
-  "/manifest.json"
-];
+self.addEventListener('install', e => self.skipWaiting());
+self.addEventListener('activate', e => self.clients.claim());
 
-// Instalar y cachear
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(URLS_TO_CACHE);
-    })
-  );
-});
-
-// Servir desde caché
-self.addEventListener("fetch", (event) => {
+self.addEventListener('fetch', function(event) {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
-  );
-});
-
-// Actualizar caché
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((names) => {
-      return Promise.all(
-        names.filter((name) => name !== CACHE_NAME).map((name) => caches.delete(name))
-      );
+    caches.open('todo-cache').then(function(cache) {
+      return cache.match(event.request).then(function (response) {
+        return response || fetch(event.request).then(function(response) {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      });
     })
   );
 });
